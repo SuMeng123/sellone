@@ -75,9 +75,14 @@ public class OrderServiceImpl implements OrderService {
                     .add(orderAmount);
 
             //订单详情入库
+            //从前台传来的订单数据中，只有商品ID、商品数量，现在把订单详情入库，缺少DetailId、OrderId
             orderDetail.setDetailId(KeyUtil.genUniqueKey());
             orderDetail.setOrderId(orderId);
+            //spring提供的方法，对象的属性拷贝，A的属性值拷贝到B中
+            //注意：当productInfo的属性值是null的时候，也会拷贝过去
             BeanUtils.copyProperties(productInfo, orderDetail);
+            //如果不用上面方法，则需要写很多如下方法
+            //orderDetail.setProductName(productInfo.getProductName());
             orderDetailRepository.save(orderDetail);
 
 //            CartDTO cartDTO = new CartDTO(orderDetail.getProductId(), orderDetail.getProductQuantity());
@@ -87,8 +92,8 @@ public class OrderServiceImpl implements OrderService {
 
         //3. 写入订单数据库（orderMaster和orderDetail）
         OrderMaster orderMaster = new OrderMaster();
-        orderDTO.setOrderId(orderId);
         BeanUtils.copyProperties(orderDTO, orderMaster);
+        orderDTO.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
@@ -101,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
         productService.decreaseStock(cartDTOList);
 
         //发送websocket消息
-        webSocket.sendMessage(orderDTO.getOrderId());
+//        webSocket.sendMessage(orderDTO.getOrderId());
 
         return orderDTO;
     }

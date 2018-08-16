@@ -48,8 +48,8 @@ public class ProductInfo {
 
     private Date updateTime;
 
-//    @JsonIgnore
-//    public ProductStatusEnum getProductStatusEnum() {
-//        return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
-//    }
+    @JsonIgnore
+    public ProductStatusEnum getProductStatusEnum() {
+        return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
+    }
 }
