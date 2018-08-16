@@ -1,5 +1,6 @@
 package com.imooc.sellone.service.impl;
 
+import com.imooc.sellone.converter.OrderMaster2OrderDTOConverter;
 import com.imooc.sellone.dataobject.OrderDetail;
 import com.imooc.sellone.dataobject.OrderMaster;
 import com.imooc.sellone.dataobject.ProductInfo;
@@ -172,7 +173,8 @@ public class OrderServiceImpl implements OrderService {
 
         //如果已支付, 需要退款
         if (orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
-            payService.refund(orderDTO);
+            //TODO
+            //payService.refund(orderDTO);
         }
 
         return orderDTO;
